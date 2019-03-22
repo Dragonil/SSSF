@@ -1,0 +1,110 @@
+<html>
+
+    <head>
+        <title>Image Collection</title>
+        <style>
+            
+            .imgBox{
+                height: 300px;
+                width: auto;
+                margin: 10px;
+                border: solid lightgray 1px;
+                float: left;
+            }
+            .imgBox:hover{
+                border: solid black 1px;
+            }
+            p{
+                padding: 0px 5px 0px 5px;
+            }
+            .title{
+                
+            }
+            .image{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                
+            }
+            .button{
+                top: 10px;
+                right: 10px;
+                position: absolute;
+                font-size: 1rem;
+                padding: 5px;
+            }
+            .desc{
+                overflow: scroll;
+            }
+            #select{
+                top: 10px;
+                right: 200px;
+                position: absolute;
+                font-size: 1rem;
+                padding: 5px;
+            }
+            #overlay{
+                top: 0;
+                left: 0;
+                z-index: 10;
+                position: absolute;
+                display: none;
+                 margin-left: auto;
+                margin-right: auto;
+                width: 90vw;
+                height: 90vh;
+                padding: 10vh;
+            }
+        </style>
+        <script>
+            function overlay(link){
+                console.log(link)
+                document.getElementById('img-big').src = `./images/${link}-mid.png`
+                let ol = document.getElementById('overlay')
+                
+                ol.style.display = "block"
+            }
+            function hide(link){
+                let ol = document.getElementById('overlay')
+                ol.style.display = "none";
+            }
+            function selection() {
+                let s = document.getElementById('select')
+                let value = s.options[s.selectedIndex].value
+                if(value === 'none'){
+                    location.href='./collection'
+                }else{
+                    location.href='./collection?tag='+s.options[s.selectedIndex].value
+                }
+                
+                
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Image Collection</h1>
+        <div id="overlay" onclick="hide()">
+            <img id="img-big" src="" alt="Image not found" />
+        </div>
+
+        {{#each content}}
+        <div class="imgBox" onclick="overlay('{{Link}}')">
+            <img class="image" src="./images/{{Link}}-small.png" height="150" alt="Image not found" />
+            <p class="title"><b>{{Title}}</b></p>
+            <p class="desc">{{Desc}}</p>
+                <p class="tag" >{{Tag}}</p>
+        </div>
+        {{/each}}
+        
+        <select id="select" class="sel" onchange="selection()">
+            <option value="" selected disabled>Select Tag</option>
+            <option value="none">Reset</option>
+            {{#each tags}}
+                    <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <button class="button" onclick="location.href='./'">Add new Image</button>
+    </body>
+</html>
+
+

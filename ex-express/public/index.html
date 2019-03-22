@@ -1,0 +1,28 @@
+<html>
+
+    <head>
+        <title>Image Upload</title>
+        <style>
+          
+            .button{
+                top: 10px;
+                right: 10px;
+                position: absolute;
+                font-size: 1rem;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Image Upload</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="text" name="Title" placeholder="Title"><br />
+            <input type="text" name="Desc" placeholder="Desc"><br />
+            <input type="text" name="Tag" placeholder="Tag"><br />
+            Select image to upload:
+            <input type="file" name="image" >
+            <input type="submit" value="Upload Image" name="submit">
+        </form>
+        <button class="button" onclick="location.href='./collection'">Show Collection</button>
+    </body>
+</html>
