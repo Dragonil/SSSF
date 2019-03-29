@@ -12,7 +12,7 @@
 
     <img id="image" class="image" src="" height="500" alt="Image not found" />
 
-    <form action="/cat/p" method="post" id="details" class="container">
+    <form id="details" class="container">
         <input hidden name="id"/>
         <label for="Name"><b>Name</b></label>
         <input type="text" placeholder="Enter Name" name="Name" required>
@@ -36,7 +36,7 @@
         <input type="text" placeholder="Link to the Image" name="ImgLink" required>
         
 
-        <input type="submit"  value="Save Cat"> 
+        <input type="button" onclick="updateCat()" value="Save Cat"> 
         <hr>
         
     </form>

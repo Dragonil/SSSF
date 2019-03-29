@@ -7,7 +7,26 @@ const crud = require('./modules/CRUD')
 const app = express()
 const http = express()
 const log = require('morgan')
-db.connect('mongodb://localhost/catdb');
+const pass = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
+require('dotenv').config();
+
+pass.use(new LocalStrategy(
+    (username, password, done) => {
+        if (username !== process.env.username || password !== process.env.password) {
+            done(null, false, {message: 'Incorrect credentials.'});
+            return;
+        }
+        return done(null, {}); // returned object usally contains something to identify the user
+    }
+));
+
+
+// Middelware
+app.use(bodyParser())
+app.use(log('dev'))
+http.use(log('debug'))
+app.use(pass.initialize())
 
 const sslkey = fs.readFileSync('ssl-key.pem');
 const sslcert = fs.readFileSync('ssl-cert.pem')
@@ -17,6 +36,8 @@ const options = {
       cert: sslcert
 };
 
+
+db.connect('mongodb://localhost/catdb')
 const catSchema = new db.Schema({
     Name: String,
     Age: Number,
@@ -28,37 +49,23 @@ const catSchema = new db.Schema({
     Weight: Number,
     ImgLink: String
 });
-
-const cat = db.model('Cat', catSchema);
 const dbmw = new crud('Cats', catSchema)
+
 
 const router = express.Router();
 require('./router')(router, dbmw);
 
 app.use('/cat', router)
-app.use(bodyParser())
-app.use(log('dev'))
-http.use(log('debug'))
 
 app.use('/', express.static('./public'))
 
 
-
-app.post('/cats', (req, res) => {
-    cat.create(req.body, function (err, cat) {
-        if (err) return handleError(err);
-        res.send(`Cat ${cat.name} created`)
-      })
-    
-})
-
-app.get('/cats', (req, res) => {
-    cat.find((err, cats) => {
-        if (err) return console.error(err);
-        res.send(cats);
-      })
-    
-})
+app.post('/login', 
+  pass.authenticate('local', { 
+    successRedirect: '/', 
+    failureRedirect: '/login.html', 
+    session: false })
+);
 
 http.get('/', (req, res) => { res.redirect('https://localhost:8080')})
 

@@ -1,10 +1,10 @@
 const db = require('mongoose')
-
- 
 function CRUD(collection /* String */, schema /* mongoose.Schema */) { 
     CRUD.prototype.model = db.model(collection, schema)
+    CRUD.prototype.schema = schema
     console.log('Model initialized ')
 }
+
 CRUD.prototype.create = (req, res, next) => {
     if(!CRUD.prototype.model) throw new Error('No Model initialized')
     CRUD.prototype.model.create(req.body, (err, data) => {
@@ -17,12 +17,25 @@ CRUD.prototype.create = (req, res, next) => {
         
     })
 }
+
+CRUD.prototype.genFilter = (keyword)=>{
+    let filter = '{ "$or": ['
+    CRUD.prototype.schema.eachPath(function(path) {
+        filter += `{"${path}": {"$regex": ".*${keyword}.*", "$options": "i"}},`
+    })
+    filter = filter.slice(0, -1)
+    filter += ']}'
+    console.log(filter)
+    return JSON.parse(filter)
+}
+
 CRUD.prototype.read = (req, res, next) => {
     if(!CRUD.prototype.model) throw new Error('No Model initialized')
-    if(req.query){ // for GET requests
-        var filter = req.query
-    }else if(req.body){ // for other requests
-        var filter = req.body
+
+    if(req.query.keyword != null){ // for GET requests
+        var filter = { Name: {$regex: `.*${req.query.keyword}.*`, $options: "i"}} 
+    }else if(req.body.keyword != null){ // for other requests
+        var filter = { Name: {$regex: `.*${req.body.keyword}.*`, $options: "i"}} 
     }else{
         var filter = {} // no filter
     }
@@ -30,7 +43,7 @@ CRUD.prototype.read = (req, res, next) => {
         var filter = {_id: filter.id }
     }
     console.log(filter)
-    CRUD.prototype.model.find(filter, (err, data) => {
+    CRUD.prototype.model.find(filter,  (err, data) => {
         if (err){
             res.send('Can`t find Object')
         } else{
@@ -42,8 +55,7 @@ CRUD.prototype.read = (req, res, next) => {
 }
 CRUD.prototype.update = (req, res, next) => {
     if(!CRUD.prototype.model) throw new Error('No Model initialized')
-+
-    console.log(req.param)
+    console.log(req.body)
     if(req.body){
         var id = req.body.id
     }else{

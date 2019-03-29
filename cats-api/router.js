@@ -7,11 +7,11 @@ module.exports = function(app, db) {
         res.send(req.body)
     })
     
-    app.post('/p', db.update, (req, res) => {
+    app.patch('/', db.update, (req, res) => {
         res.send(req.body)
     })
     
     app.delete('/', db.delete, (req, res) => {
-        res.redirect('/')
+        res.send()
     })
   };

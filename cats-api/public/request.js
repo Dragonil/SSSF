@@ -1,17 +1,24 @@
 const xhr = new XMLHttpRequest()
 
+const formToJSON = elements => [].reduce.call(elements, (data, element) => {
+
+    data[element.name] = element.value;
+    return data;
+  
+  }, {});
 
 function updateCat(){
     var form = document.getElementById('details').elements
-    var formData = new FormData(document.getElementById('details'))
+    var formData = formToJSON(document.getElementById('details'))
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert('updated')
         }
     }
+
     xhr.open('PATCH', window.location.origin + '/cat')
-    xhr.send(JSON.stringify({_id: form.namedItem("id").value,
-                            Name: form.namedItem("Name").value}))
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify(formData))
 }
 
 
@@ -20,6 +27,8 @@ function deleteCat(){
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert('Cat Deleted')
+            window.location.href = window.location.origin
+            
         }
     }
     xhr.open('DELETE', window.location.origin + '/cat?id='+id)
@@ -76,7 +85,7 @@ function getCats(search){
         }
     }
     if (search){
-        var url = '/cat?Name=' + search
+        var url = '/cat?keyword=' + search
     }else{
         var url = '/cat'
     }
