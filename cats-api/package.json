@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "genCerts": "openssl genrsa -out ssl-key.pem 4096 && openssl req -new -key ssl-key.pem -out certrequest.csr && openssl x509 -req -in certrequest.csr -signkey ssl-key.pem -out ssl-cert.pem"
   },
   "author": "Oliver Gorges",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "fs": "0.0.1-security",
     "https": "^1.0.0",
-    "mongoose": "^5.4.19"
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1"
   }
 }

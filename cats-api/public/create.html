@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Create Cat</title>
+    <script type="text/javascript" src="request.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Create Cat</h1>
+    <nav>
+        <button onclick="window.location.href='index.html'">Back</button>
+    </nav>  
+    <form action="/cat" method="post" id="update" class="container">
+        <label for="Name"><b>Name</b></label>
+        <input type="text" placeholder="Enter Name" name="Name" required>
+
+        <label for="gender"><b>Gender</b></label>
+        <select name="Gender">
+            <option value="male" selected>Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label for="Age"><b>Age</b></label>
+        <input type="number" placeholder="Enter Age" name="Age" required>
+
+        <label for="Color"><b>Color</b></label>
+        <input type="text" placeholder="Enter Color" name="Color" required>
+
+        <label for="Weight"><b>Weight</b></label>
+        <input type="text" placeholder="Enter Weight" name="Weight" required>
+
+        <label for="ImgLink"><b>Image</b></label>
+        <input type="text" placeholder="Link to the Image" name="ImgLink" required>
+
+
+        <input type="submit" value="Create Cat"> 
+        <hr>
+        
+    </form>
+
+</body>
+</html>

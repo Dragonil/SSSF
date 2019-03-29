@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Cats</title>
+    <script type="text/javascript" src="request.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body onload="getCats()">
+    <h1>Cats</h1>
+    <nav>
+        <input id="searchbox" placeholder="Keyword..." />
+        <button onclick="getCats(document.getElementById('searchbox').value)">Search</button>
+        <button onclick="window.location.href = '/create.html'">New Cat</button>
+    </nav>
+    <div id="elements"></div>
+
+</body>
+</html>

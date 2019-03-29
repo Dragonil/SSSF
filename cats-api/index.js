@@ -1,10 +1,21 @@
 const express = require('express')
 const db = require('mongoose')
+const fs = require('fs')
+const https = require('https')
 const bodyParser = require('body-parser')
 const crud = require('./modules/CRUD')
 const app = express()
-
+const http = express()
+const log = require('morgan')
 db.connect('mongodb://localhost/catdb');
+
+const sslkey = fs.readFileSync('ssl-key.pem');
+const sslcert = fs.readFileSync('ssl-cert.pem')
+
+const options = {
+      key: sslkey,
+      cert: sslcert
+};
 
 const catSchema = new db.Schema({
     Name: String,
@@ -14,17 +25,24 @@ const catSchema = new db.Schema({
         enum: ['male', 'female']
     },
     Color: String,
-    Weight: Number
+    Weight: Number,
+    ImgLink: String
 });
 
 const cat = db.model('Cat', catSchema);
 const dbmw = new crud('Cats', catSchema)
 
-app.use(bodyParser())
+const router = express.Router();
+require('./router')(router, dbmw);
 
-app.get('/', (req, res) => {
-    res.send('Cat DB')
-});
+app.use('/cat', router)
+app.use(bodyParser())
+app.use(log('dev'))
+http.use(log('debug'))
+
+app.use('/', express.static('./public'))
+
+
 
 app.post('/cats', (req, res) => {
     cat.create(req.body, function (err, cat) {
@@ -42,21 +60,8 @@ app.get('/cats', (req, res) => {
     
 })
 
-app.post('/create', dbmw.create, (req, res) => {
-    res.send('Object created')
-})
-
-app.get('/read', dbmw.read, (req, res) => {
-    res.send(req.body)
-})
-
-app.patch('/update', dbmw.update, (req, res) => {
-    res.send('Object updated')
-})
-
-app.delete('/delete', dbmw.delete, (req, res) => {
-    res.send('Object deleted')
-})
+http.get('/', (req, res) => { res.redirect('https://localhost:8080')})
 
 
-app.listen(8080)
+http.listen(8081)
+https.createServer(options, app).listen(8080)

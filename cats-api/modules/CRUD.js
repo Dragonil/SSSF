@@ -29,8 +29,8 @@ CRUD.prototype.read = (req, res, next) => {
     if(filter.id){
         var filter = {_id: filter.id }
     }
-    
-    CRUD.prototype.model.find(filter, req.body, (err, data) => {
+    console.log(filter)
+    CRUD.prototype.model.find(filter, (err, data) => {
         if (err){
             res.send('Can`t find Object')
         } else{
@@ -42,12 +42,14 @@ CRUD.prototype.read = (req, res, next) => {
 }
 CRUD.prototype.update = (req, res, next) => {
     if(!CRUD.prototype.model) throw new Error('No Model initialized')
-    if(req.body.id){
++
+    console.log(req.param)
+    if(req.body){
         var id = req.body.id
     }else{
         var id = -1 // no valid id
     }
-    
+    console.log(req.body," -  ", id)
     CRUD.prototype.model.updateOne({_id: id }, req.body, (err, data) => {
         if (err){
             res.send('Can`t update Object')
@@ -69,7 +71,6 @@ CRUD.prototype.delete = (req, res, next) => {
     }else{
         var id = -1 // no valid id
     }
-    
     CRUD.prototype.model.deleteOne({_id: id }, (err) => {
         if (err){
             res.send('Can`t delete Object')
