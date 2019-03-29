@@ -36,6 +36,7 @@ app.use(bodyParser())
 app.use(log('dev'))
 http.use(log('debug'))
 app.use(pass.initialize())
+app.enable('trust proxy')
 
 const sslkey = fs.readFileSync('ssl-key.pem');
 const sslcert = fs.readFileSync('ssl-cert.pem')
@@ -76,7 +77,7 @@ app.post('/login',
     session: false })
 );
 
-http.get('/', (req, res) => { res.redirect('https://localhost:8080')})
+http.get('/', (req, res) => { res.redirect('https://localhost:8080/')})
 
 
 http.listen(8081)
