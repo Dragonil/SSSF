@@ -39,8 +39,12 @@ CRUD.prototype.read = (req, res, next) => {
     }else{
         var filter = {} // no filter
     }
-    if(filter.id){
-        var filter = {_id: filter.id }
+    if(req.query.id){
+        var filter = {_id: req.query.id }
+    }else if(req.param.id){
+        var filter = {_id: req.param.id }
+    }else if(req.body.id){
+        var filter = {_id: req.body.id }
     }
     console.log(filter)
     CRUD.prototype.model.find(filter,  (err, data) => {

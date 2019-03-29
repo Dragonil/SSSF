@@ -21,6 +21,15 @@ pass.use(new LocalStrategy(
     }
 ));
 
+const login = (req, res, next) => {
+    console.log(req.user)
+    if(req.user){
+        next()
+    }else{
+        res.redirect('/index.html')
+    }
+
+}
 
 // Middelware
 app.use(bodyParser())
