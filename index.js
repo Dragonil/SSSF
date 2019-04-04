@@ -63,7 +63,7 @@ const options = {
       cert: sslcert
 };
 
-db.connect('mongodb://localhost/catdb')
+db.connect(`mongodb://${process.env.DBUser}:${process.env.DBPW}@${process.env.DBURL}:27017/catdb`)
 const catSchema = new db.Schema({
     Name: String,
     Age: Number,
@@ -77,7 +77,7 @@ const catSchema = new db.Schema({
 });
 const dbmw = new crud('Cats', catSchema)
 
-http.get('/',  (req, res) => { res.redirect('https://localhost:8080/')})
+http.get('/',  (req, res) => { res.redirect('https://'+process.env.MASTER_IP+':8080/')})
 app.get('/', login, (req, res) => { res.redirect('/ui')})
 app.use('/', express.static('./public')) // js and css
 
