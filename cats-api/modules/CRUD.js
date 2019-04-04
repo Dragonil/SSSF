@@ -20,13 +20,22 @@ CRUD.prototype.create = (req, res, next) => {
 
 CRUD.prototype.genFilter = (keyword)=>{
     let filter = '{ "$or": ['
-    CRUD.prototype.schema.eachPath(function(path) {
+    CRUD.prototype.schema.eachPath((path)=> {
         filter += `{"${path}": {"$regex": ".*${keyword}.*", "$options": "i"}},`
     })
     filter = filter.slice(0, -1)
     filter += ']}'
     console.log(filter)
     return JSON.parse(filter)
+}
+
+CRUD.prototype.getSchema = (req, res, next) =>{
+    let s = {keys:[]}
+    CRUD.prototype.schema.eachPath((path) => {
+        s.keys.push(path)
+    })
+    req.schema = s
+    next()
 }
 
 CRUD.prototype.read = (req, res, next) => {
@@ -41,12 +50,12 @@ CRUD.prototype.read = (req, res, next) => {
     }
     if(req.query.id){
         var filter = {_id: req.query.id }
-    }else if(req.param.id){
-        var filter = {_id: req.param.id }
+    }else if(req.params.id){
+        var filter = {_id: req.params.id }
     }else if(req.body.id){
         var filter = {_id: req.body.id }
     }
-    console.log(filter)
+    console.log(req.params, filter)
     CRUD.prototype.model.find(filter,  (err, data) => {
         if (err){
             res.send('Can`t find Object')

@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Cats</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
+</head>
+<body >
+    <h1>Cats</h1>
+    <nav>
+        <input id="searchbox" placeholder="Keyword..." />
+        <button onclick="window.location.href = '/ui?keyword=' + document.getElementById('searchbox').value">Search</button>
+        <button onclick="window.location.href = '/ui/create'">New Cat</button>
+        <button onclick="window.location.href = '/logout'">Logout</button>
+    </nav>
+    
+    <div id="elements">
+    {{#each this}}
+        <a href="/ui/details/{{this._id}}">
+            <div class="imgBox">
+                <img class="image" src="{{this.ImgLink}}" height="200" alt="Image not found" />
+                <p ><b>{{this.Name}}</b></p>
+                <p >{{this.Gender}}</p>
+            </div>
+        </a>
+    {{/each}}
+    </div>
+
+</body>
+</html>

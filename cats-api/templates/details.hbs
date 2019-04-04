@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Cat Details</title>
+    <script type="text/javascript" src="/request.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+{{#each this}}
+<body onload="document.getElementById('Gender').value = '{{this.Gender}}'">
+    <nav>
+        <button onclick="deleteCat()">Delete</button>
+        <button onclick="window.location.href='/ui'">Back</button>
+        <button onclick="window.location.href = '/logout'">Logout</button>
+    </nav>
+    
+    <img id="image" class="image" src="{{this.ImgLink}}" height="400" alt="Image not found" />
+
+    <form id="details" class="container">
+        <input hidden name="id" value="{{this._id}}"/>
+        <label for="Name"><b>Name</b></label>
+        <input type="text" placeholder="Enter Name" name="Name" value="{{this.Name}}" required>
+
+        <label for="gender"><b>Gender</b></label>
+        <select name="Gender" id="Gender" >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label for="Age"><b>Age</b></label>
+        <input type="number" placeholder="Enter Age" name="Age" value="{{this.Age}}">
+
+        <label for="Color"><b>Color</b></label>
+        <input type="text" placeholder="Enter Color" name="Color" value="{{this.Color}}">
+
+        <label for="Weight"><b>Weight</b></label>
+        <input type="text" placeholder="Enter Weight" name="Weight" value="{{this.Weight}}">
+
+        <label for="ImgLink"><b>Image</b></label>
+        <input type="text" placeholder="Link to the Image" name="ImgLink" value="{{this.ImgLink}}">
+        
+
+        <input type="button" onclick="updateCat()" value="Save Cat"> 
+        <hr>
+        
+    </form>
+   
+</body>
+ {{/each}}
+</html>
