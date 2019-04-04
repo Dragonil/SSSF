@@ -77,7 +77,7 @@ const catSchema = new db.Schema({
 });
 const dbmw = new crud('Cats', catSchema)
 
-http.get('/',  (req, res) => { res.redirect('https://'+process.env.MASTER_IP+':8080/')})
+http.get('/',  (req, res) => { res.redirect('https://'+process.env.MASTER_IP+':443/')})
 app.get('/', login, (req, res) => { res.redirect('/ui')})
 app.use('/', express.static('./public')) // js and css
 
@@ -105,5 +105,5 @@ require('./ui')(ui, dbmw)
 app.use('/ui',login, ui)
 
 
-http.listen(8081)
-https.createServer(options, app).listen(8080)
+http.listen(80)
+https.createServer(options, app).listen(443)
