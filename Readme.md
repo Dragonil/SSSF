@@ -21,6 +21,11 @@ This repository is used to submit the assignments for the Server-side Scripting 
 - What is the (max) cost for 1 (small) cloudlet running for 30 days? 
     - 6.90 €
 - When Node.js is deployed, what happens to the dependencies defined in package.json?
-    - it installs the dependencies 
+    - it installs the dependencies form the package.json
+
+List different ways how you can configure or setup your own server configuration to the deployed service.
+- .env file
+- config.js file that is not uploaded to git
+- 
 
 
